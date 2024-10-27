@@ -4,13 +4,13 @@ import axios from "../../../api/axios";
 
 const AddBookByAuthor = () => {
   const [inputBookData, setInputBookData] = useState({
-    id: "",
+    book_id: "",
     book_name: "",
     author_name: "",
     edition: "",
     book_category: "",
   });
-  const { id, book_name, author_name, edition, book_category } = inputBookData;
+  const { book_id, book_name, author_name, edition, book_category } = inputBookData;
   const onInputChange = (e) => {
     setInputBookData({ ...inputBookData, [e.target.name]: e.target.value });
   };
@@ -29,7 +29,7 @@ const AddBookByAuthor = () => {
       );
       alert("add successfull");
       setInputBookData({
-        id: "",
+        book_id: "",
         book_name: "",
         author_name: "",
         edition: "",
@@ -38,7 +38,7 @@ const AddBookByAuthor = () => {
       localStorage.setItem("BookDataByName", JSON.stringify(response.data));
     } catch (error) {
       if (error.response.data && error.response.data.error)
-        setIdError(error.response.data.error.id);
+        setIdError(error.response.data.error.book_id);
       if (error.response.data && error.response.data.error)
         setBookError(error.response.data.error.book_name);
       if (error.response.data && error.response.data.error)
@@ -59,16 +59,16 @@ const AddBookByAuthor = () => {
           <div class="relative z-0 w-full mb-5 group">
             <input
               type="text"
-              name="id"
-              value={id}
+              name="book_id"
+              value={book_id}
               onChange={(e) => onInputChange(e)}
-              id="id"
+              id="book_id"
               class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
               placeholder=" "
             />
             {idError && <p className="text-xs text-red-700">{idError}</p>}
             <label
-              for="id"
+              for="book_id"
               class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6"
             >
               Book Id

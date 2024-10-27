@@ -1,8 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
+import axios from "../../../api/axios";
 
 const ShowStudentsList = () => {
-  const studentData = JSON.parse(localStorage.getItem("studentData"));
+  const [studentData, setStudentData] = useState("");
+  // const studentData = JSON.parse(localStorage.getItem("studentData"));
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/getStudentDetail")
+      .then((response) => setStudentData(response.data.students))
+      .catch((error) => console.error("Error fetching student data", error));
+  }, []);
+  localStorage.setItem("studentsData", JSON.stringify(studentData));
   return (
     <div className="flex gap-4 bg-gray-100">
       <div>
@@ -75,7 +84,7 @@ const ShowStudentsList = () => {
             </tr>
           </thead>
           <tbody>
-            {studentData &&
+            {studentData.length > 0 &&
               studentData.map((item) => {
                 return (
                   <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
@@ -95,12 +104,12 @@ const ShowStudentsList = () => {
                       scope="row"
                       class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                     >
-                      {item.studentID}
+                      {item.student_id}
                     </th>
-                    <td class="px-6 py-4">{item.studentName}</td>
-                    <td class="px-6 py-4">{item.fatherName}</td>
-                    <td class="px-6 py-4">{item.facultyName}</td>
-                    <td class="px-6 py-4">{item.courseName}</td>
+                    <td class="px-6 py-4">{item.student_name}</td>
+                    <td class="px-6 py-4">{item.father_name}</td>
+                    <td class="px-6 py-4">{item.faculty_name}</td>
+                    <td class="px-6 py-4">{item.course_name}</td>
                     <td class="px-6 py-4">
                       <a
                         href="#"

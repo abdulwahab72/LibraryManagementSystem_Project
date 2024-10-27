@@ -5,19 +5,20 @@ import { GoIssueClosed } from "react-icons/go";
 import { PiStudentFill } from "react-icons/pi";
 
 const Card = () => {
-  const bookData = JSON.parse(localStorage.getItem("BookDataByName")) || [];
-  const studentData = JSON.parse(localStorage.getItem("studentData")) || [];
+  const booksData = JSON.parse(localStorage.getItem("booksData")) || [];
+  console.log(booksData)
+  const studentsData = JSON.parse(localStorage.getItem("studentsData")) || [];
   const issueBookData =
-    JSON.parse(localStorage.getItem("issueBookFormData")) || [];
+    JSON.parse(localStorage.getItem("issueBooksData")) || [];
   const returnBookData =
     JSON.parse(localStorage.getItem("returnBookFormData")) || [];
   //to check the objects in array.
   let count = 0;
-  for (let i = 0; i < bookData.length; i++) {
+  for (let i = 0; i < booksData.length; i++) {
     count++;
   }
   let studentCount = 0;
-  for (let i = 0; i < studentData.length; i++) {
+  for (let i = 0; i < studentsData.length; i++) {
     studentCount++;
   }
   let issueBookCount = 0;
