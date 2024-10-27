@@ -45,7 +45,6 @@ const IssueBookForm = () => {
         issue_book_id: "",
         issue_date: "",
       });
-      localStorage.setItem("issueBookData", JSON.stringify(response.data));
     } catch (error) {
       if (error.response.data && error.response.data.error)
         setStudentIDError(error.response.data.error.student_id);

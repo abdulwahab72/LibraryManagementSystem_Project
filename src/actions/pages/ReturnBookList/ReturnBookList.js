@@ -1,8 +1,19 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "../../components/Sidebar";
+import axios from "../../../api/axios";
 
 const ReturnBookList = () => {
-  const returnBookData = JSON.parse(localStorage.getItem("returnBookFormData"));
+  const [returnBookData, setReturnBookData] = useState("");
+  useEffect(() => {
+    axios
+      .get("http://127.0.0.1:8000/api/getReturnBookDetail")
+      .then((response) => setReturnBookData(response.data.returnBooks))
+      .catch((error) =>
+        console.error("Error to fetching return book data", error)
+      );
+  }, []);
+  localStorage.setItem("returnBooksData", JSON.stringify(returnBookData));
+  // const returnBookData = JSON.parse(localStorage.getItem("returnBookFormData"));
   return (
     <div className="flex gap-4 bg-gray-100">
       <div>
@@ -55,7 +66,16 @@ const ReturnBookList = () => {
                 </div>
               </th>
               <th scope="col" class="px-6 py-3">
+                Return Book ID
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Issue Book ID
+              </th>
+              <th scope="col" class="px-6 py-3">
                 Student ID
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Book ID
               </th>
               <th scope="col" class="px-6 py-3">
                 Student Name
@@ -70,57 +90,53 @@ const ReturnBookList = () => {
                 Course Name
               </th>
               <th scope="col" class="px-6 py-3">
-                Book Name
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Issue Date
-              </th>
-              <th scope="col" class="px-6 py-3">
-                Action
+                Return date
               </th>
             </tr>
           </thead>
           <tbody>
-            {returnBookData &&
-              returnBookData.map((item) => {
-                return (
-                  <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                    <td class="w-4 p-4">
-                      <div class="flex items-center">
-                        <input
-                          id="checkbox-table-search-1"
-                          type="checkbox"
-                          class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
-                        />
-                        <label for="checkbox-table-search-1" class="sr-only">
-                          checkbox
-                        </label>
-                      </div>
-                    </td>
-                    <th
-                      scope="row"
-                      class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                    >
-                      {item.studentID}
-                    </th>
-                    <td class="px-6 py-4">{item.studentName}</td>
-                    <td class="px-6 py-4">{item.fatherName}</td>
-                    <td class="px-6 py-4">{item.facultyName}</td>
-                    <td class="px-6 py-4">{item.courseName}</td>
-                    <td class="px-6 py-4">{item.bookName}</td>
-                    <td class="px-6 py-4">{item.issueDate}</td>
-
-                    <td class="px-6 py-4">
-                      <a
-                        href="#"
-                        class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+            {returnBookData.length > 0
+              ? returnBookData.map((item) => {
+                  return (
+                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                      <td class="w-4 p-4">
+                        <div class="flex items-center">
+                          <input
+                            id="checkbox-table-search-1"
+                            type="checkbox"
+                            class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                          />
+                          <label for="checkbox-table-search-1" class="sr-only">
+                            checkbox
+                          </label>
+                        </div>
+                      </td>
+                      <th
+                        scope="row"
+                        class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                       >
-                        Edit
-                      </a>
-                    </td>
-                  </tr>
-                );
-              })}
+                        {item.return_book_id}
+                      </th>
+                      <td class="px-6 py-4">{item.issue_book_id}</td>
+                      <td class="px-6 py-4">{item.student_id}</td>
+                      <td class="px-6 py-4">{item.book_id}</td>
+                      <td class="px-6 py-4">{item.student_name}</td>
+                      <td class="px-6 py-4">{item.father_name}</td>
+                      <td class="px-6 py-4">{item.faculty_name}</td>
+                      <td class="px-6 py-4">{item.course_name}</td>
+                      <td class="px-6 py-4">{item.return_date}</td>
+                      <td class="px-6 py-4">
+                        <a
+                          href="#"
+                          class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
+                        >
+                          Edit
+                        </a>
+                      </td>
+                    </tr>
+                  );
+                })
+              : "No data yet"}
           </tbody>
         </table>
       </div>
